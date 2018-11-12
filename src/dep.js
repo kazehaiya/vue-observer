@@ -1,19 +1,14 @@
-import Watcher from './watcher';
-
-// 唯一值
-let uid = 0;
-
 /**
- * 依赖收集部分，是 watcher 与数据部分的桥梁
+ * 依赖收集部分，是 watcher 与数据部分的桥梁，主要实现了以下两个功能：
+ * 1.用 addSub 方法可以在目前的 Dep 对象中增加一个 Watcher 的订阅操作；
+ * 2.用 notify 方法通知目前 Dep 对象的 subs 中的所有 Watcher 对象触发更新操作。
  *
  * @export
  * @class Dep
  */
 export default class Dep {
   constructor() {
-    // 唯一 id
-    this.id = uid++;
-    // 收集到的依赖全部存入此数组内
+    // 收集到的 watcher 依赖全部存入此数组内
     this.subs = [];
   }
 
@@ -52,23 +47,30 @@ export default class Dep {
   }
 
   /**
-   * 通知所有的 watcher 更新视图
+   * 通知所有的 watcher 更新
    *
    * @memberof Dep
    */
   notify() {
     // 获取一个备份，以免处 bug
     const subs = this.subs.slice();
-    for (let i = 0, l = subs.length; i < l; i++) {
-      subs[i].update();
+    const subsLen = subs.length;
+    for (let index = 0; index < subsLen; index++) {
+      subs[index].update();
     }
   }
 }
 
-// 销毁对象，避免多余的收集
+// 目标对象
 Dep.target = null;
 const targetStack = [];
 
+/**
+ * 添加 watcher 对象
+ *
+ * @export
+ * @param {Watcher} target
+ */
 export function pushTarget(target) {
   if (Dep.target) {
     targetStack.push(Dep.target);
@@ -76,6 +78,11 @@ export function pushTarget(target) {
   Dep.target = target;
 }
 
+/**
+ * 移除 watcher 对象
+ *
+ * @export
+ */
 export function popTarget() {
   Dep.target = targetStack.pop();
 }

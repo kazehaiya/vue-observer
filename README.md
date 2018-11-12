@@ -17,3 +17,5 @@
  */
 Object.defineProperty(obj, prop, descriptor);
 ```
+
+#### 发布订阅模式

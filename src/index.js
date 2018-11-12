@@ -1,5 +1,5 @@
 import observe from './observe';
-import Watcher from './watcher';
+// import Watcher from './watcher';
 
 /**
  * Vue
@@ -15,7 +15,7 @@ export default class Vue {
    */
   constructor(options) {
     // 获取 data 对象
-    const { data = {}} = options;
+    const { data = {} } = options;
     const vm = this;
     // 将 data 挂载到 vm 上
     vm._data = data;
@@ -25,7 +25,7 @@ export default class Vue {
      */
     // 添加 observe
     observe(data);
-    // 初始化 Dep.target 指向
-    new Watcher(vm);
+    // 模拟解析 `{{ property }}` 触发的操作
+    // new Watcher(vm);
   }
 }

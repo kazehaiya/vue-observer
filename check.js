@@ -8,4 +8,6 @@ const vm = new Vue({
   }
 });
 
+vm._data.name = '新值';
+
 console.log(vm);
