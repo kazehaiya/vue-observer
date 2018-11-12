@@ -1,5 +1,4 @@
 import observe from './observe';
-import Watcher from './watcher';
 
 /**
  * Vue
@@ -19,13 +18,14 @@ export default class Vue {
     const vm = this;
     // 将 data 挂载到 vm 上
     vm._data = data;
+    // watcher 数组
+    vm._watchers = [];
     /**
      * 源码在此处进行对 props 和 methods 的 key 值判断
      * 禁止 data 内部声明的属性 key 值与它们冲突
      */
     // 添加 observe
     observe(data);
-    // 模拟解析到 `{{name}}` 触发的操作
-    new Watcher(vm, data, 'name');
+    // 以下处理对 options 上的 watch 方法
   }
 }
