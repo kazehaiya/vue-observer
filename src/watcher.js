@@ -1,6 +1,13 @@
 import Dep from './dep';
 
 export default class Watcher {
+  /**
+   * Creates an instance of Watcher.
+   * @param {Vue} vm                  对应的 Vue 组件
+   * @param {Object | Function} obj   组件的 data 对象/函数
+   * @param {String} key              更新的 key
+   * @memberof Watcher
+   */
   constructor(vm, obj, key) {
     this.vm = vm;
     // 向 watcher 数组内新增一个 watcher
@@ -11,7 +18,9 @@ export default class Watcher {
     Dep.target = this;
     this.obj = obj;
     this.key = key;
+    // 此处触发 getter
     this.value = obj[key];
+    // 回收依赖，以免多余的调用
     Dep.target = null;
   }
 
@@ -36,7 +45,12 @@ export default class Watcher {
     this.value = this.obj[this.key];
   }
 
-  get() {
-    console.log('watcher')
+  /**
+   * 销毁对象时回收所有的 dep 依赖
+   *
+   * @memberof Watcher
+   */
+  tearDown() {
+
   }
 }
