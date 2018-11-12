@@ -1,13 +1,14 @@
 import Vue from './src/index';
 
-// 测试部分
+const data = {
+  name: 'test'
+};
+
+// 数据部分
 const vm = new Vue({
   el: 'test',
-  data: {
-    name: 'testName'
-  }
+  data
 });
 
-vm._data.name = '新值';
-
-console.log(vm);
+// 模拟更新 dom
+vm._data.name = 'newVal';

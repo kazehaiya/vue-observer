@@ -1,24 +1,8 @@
 import Dep from './dep';
-import { def, isObject } from './utils';
+import { def, isObject, copyAugment, dependArray } from './utils';
+import { arrayMethods } from './array';
 
-/**
- * 当值为数组的情况
- *
- * @param {Array} value
- */
-function dependArray(value) {
-  const valueLen = value.length;
-  let item;
-  for (let i = 0; i < valueLen; i++) {
-    item = value[i];
-    // 为每一项值（已经加入观测的）添加 watcher
-    item && item.__ob__ && item.__ob__.dep.depend();
-    // 如果该数组项还是 Array 则递归
-    if (Array.isArray(item)) {
-      dependArray(item);
-    }
-  }
-}
+const arrayKeys = Object.getOwnPropertyNames(arrayMethods);
 
 /**
  * 此处为对象每一项进行响应式改造
@@ -48,16 +32,18 @@ function defineReactive(obj, key) {
     configurable: true,
     get: function reactiveGetter() {
       const value = getter ? getter.call(obj) : val;
-      // if (Dep.target) {
-      //   dep.depend();
-      //   // 如果值不是 undefiend
-      //   if (childObj) {
-      //     childObj.dep.depend();
-      //     if (Array.isArray(value)) {
-      //       dependArray(value);
-      //     }
-      //   }
-      // }
+      // 如果视图部分有对应的对象渲染
+      if (Dep.target) {
+        dep.depend();
+        // 如果值是对象的情况
+        if (childObj) {
+          childObj.dep.depend();
+          // 考虑到对象为 Array 的情况
+          if (Array.isArray(value)) {
+            dependArray(value);
+          }
+        }
+      }
       return value;
     },
     set: function reactiveSetter(newVal) {
@@ -66,7 +52,10 @@ function defineReactive(obj, key) {
       if (newVal === value || (newVal !== newVal && value !== value)) {
         return;
       }
-      if (getter && !setter) return;
+      // 如果没有 set 方法则忽略赋值
+      if (getter && !setter) {
+        return;
+      }
       // 赋新值
       if (setter) {
         setter.call(obj, newVal);
@@ -94,8 +83,10 @@ class Observer {
     def(value, '__ob__', this);
     // 待研究该方法的作用
     this.dep = new Dep();
-    // 数组得特殊处理，对其每一项都 observe
+    // 数组进行单独处理
     if (Array.isArray(value)) {
+      // 重写部分改变数组的方法
+      copyAugment(value, arrayMethods, arrayKeys);
       this.observeArray(value);
     } else {
       this.walk(value);
@@ -103,8 +94,7 @@ class Observer {
   }
 
   /**
-   * 对数组类进行观测
-   * 实际上就是遍历数组，然后观察其中的每一个值
+   * 遍历数组，观察其中的每一个值（对象属性的值）
    *
    * @param {Array} items
    * @memberof Observer

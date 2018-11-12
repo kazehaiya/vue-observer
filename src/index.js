@@ -1,5 +1,5 @@
 import observe from './observe';
-// import Watcher from './watcher';
+import Watcher from './watcher';
 
 /**
  * Vue
@@ -25,7 +25,7 @@ export default class Vue {
      */
     // 添加 observe
     observe(data);
-    // 模拟解析 `{{ property }}` 触发的操作
-    // new Watcher(vm);
+    // 模拟解析到 `{{name}}` 触发的操作
+    new Watcher(vm, data, 'name');
   }
 }

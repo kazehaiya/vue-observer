@@ -1,11 +1,26 @@
-import Dep, { pushTarget, popTarget } from './dep';
+import Dep from './dep';
 
 export default class Watcher {
-  constructor(vm) {
+  constructor(vm, obj, key) {
+    this.vm = vm;
+    // 将 Dep.target 指向自己
+    // 然后触发属性的 getter 添加监听
+    // 最后将 Dep.target 置空
     Dep.target = vm;
+    this.obj = obj;
+    this.key = key;
+    this.value = obj[key];
+    Dep.target = null;
   }
 
+  /**
+   * 触发更新 DOM
+   *
+   * @memberof Watcher
+   */
   update() {
-    console.log('触发 watcher');
+    console.log('内容更新啦！');
+    // 获得新值
+    this.value = this.obj[this.key];
   }
 }

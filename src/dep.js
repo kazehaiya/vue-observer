@@ -63,26 +63,3 @@ export default class Dep {
 
 // 目标对象
 Dep.target = null;
-const targetStack = [];
-
-/**
- * 添加 watcher 对象
- *
- * @export
- * @param {Watcher} target
- */
-export function pushTarget(target) {
-  if (Dep.target) {
-    targetStack.push(Dep.target);
-  }
-  Dep.target = target;
-}
-
-/**
- * 移除 watcher 对象
- *
- * @export
- */
-export function popTarget() {
-  Dep.target = targetStack.pop();
-}
