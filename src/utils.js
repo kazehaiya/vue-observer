@@ -34,7 +34,7 @@ export function isObject(obj) {
  * @param {Array<string>} keys
  */
 export function copyAugment (target, src, keys) {
-  for (const key in keys) {
+  for (const key of keys) {
     def(target, key, src[key]);
   }
 }
