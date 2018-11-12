@@ -32,6 +32,7 @@ function defineReactive(obj, key) {
     configurable: true,
     get: function reactiveGetter() {
       const value = getter ? getter.call(obj) : val;
+      console.log('get Value', value);
       // 如果视图部分有对应的对象渲染
       if (Dep.target) {
         dep.depend();
@@ -48,6 +49,7 @@ function defineReactive(obj, key) {
     },
     set: function reactiveSetter(newVal) {
       const value = getter ? getter.call(obj) : val;
+      console.log('set Value', newVal);
       // 如果赋予的值与原值没变化则忽略
       if (newVal === value || (newVal !== newVal && value !== value)) {
         return;
@@ -113,7 +115,7 @@ class Observer {
    */
   walk(obj) {
     for (const key in obj) {
-      defineReactive(obj, obj[key]);
+      defineReactive(obj, key);
     }
   }
 }

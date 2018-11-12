@@ -6,11 +6,21 @@ export default class Watcher {
     // 将 Dep.target 指向自己
     // 然后触发属性的 getter 添加监听
     // 最后将 Dep.target 置空
-    Dep.target = vm;
+    Dep.target = this;
     this.obj = obj;
     this.key = key;
     this.value = obj[key];
     Dep.target = null;
+  }
+
+  /**
+   * 添加 Dep
+   *
+   * @param {Dep} dep
+   * @memberof Watcher
+   */
+  addDep(dep) {
+    dep.addSub(this);
   }
 
   /**
