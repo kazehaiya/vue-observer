@@ -23,19 +23,6 @@ export default class Dep {
   }
 
   /**
-   * 移除一项 watcher
-   *
-   * @param {Watcher} sub
-   * @memberof Dep
-   */
-  removeSub(sub) {
-    const index = this.subs.indexOf(sub);
-    if (index !== -1) {
-      this.subs.splice(index, 1);
-    }
-  }
-
-  /**
    * 当前的 Dep 有绑定对象时，则向数组内添加该对象
    *
    * @memberof Dep
@@ -61,5 +48,5 @@ export default class Dep {
   }
 }
 
-// 目标对象
+// 目标 watcher 对象
 Dep.target = null;

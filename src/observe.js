@@ -32,7 +32,7 @@ function defineReactive(obj, key) {
     configurable: true,
     get: function reactiveGetter() {
       const value = getter ? getter.call(obj) : val;
-      // 如果视图部分有对应的对象渲染
+      // 如果视图部分有对应的对象渲染（此处和 watcher 联动）
       if (Dep.target) {
         dep.depend();
         // 如果值是对象的情况
