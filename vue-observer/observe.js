@@ -13,7 +13,7 @@ const arrayKeys = Object.getOwnPropertyNames(arrayMethods);
 function defineReactive(obj, key) {
   let val;
   const dep = new Dep();
-  // 获取属性的描述符
+  // 获取属性的描述符，判断是否是可配置的对象
   const property = Object.getOwnPropertyDescriptor(obj, key);
   if (property && property.configurable === false) {
     return;
@@ -81,7 +81,7 @@ class Observer {
     this.value = value;
     // 设置 __ob__ 属性
     def(value, '__ob__', this);
-    // 待研究该方法的作用
+    // 为 data 对象类型创建其私有的管家，用于依赖收集
     this.dep = new Dep();
     // 数组进行单独处理
     if (Array.isArray(value)) {

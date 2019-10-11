@@ -16,7 +16,7 @@ export default class Watcher {
     // 获取该实例的 data 属性以及 watch 到的键值
     this.obj = obj;
     this.key = key;
-    // 获取回调方法
+    // 获取回调方法（订阅者函数）
     this.cb = cb;
     // 触发 observe 里面的 getter 方法
     this.value = obj[key];
@@ -25,7 +25,7 @@ export default class Watcher {
   }
 
   /**
-   * 添加 Dep
+   * 将本 watcher 添加到管家 Dep 中
    *
    * @param {Dep} dep
    * @memberof Watcher
@@ -40,9 +40,9 @@ export default class Watcher {
    * @memberof Watcher
    */
   update() {
-    // 获得 setter 的新值
+    // 获取 setter 的新值，将新值反馈给订阅者
     // constructor 如果最后没有回收依赖且 setter 内没有进行传入值得判断
-    // 此处会发生死循环的情况
+    // 此处会发生死循环的情况（此处触发了 getter 但已经没有 Dep.target 对象了）
     const newVal = this.obj[this.key];
     this.value = newVal;
     // 触发 DOM 更新
