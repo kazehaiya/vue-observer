@@ -52,7 +52,7 @@ function defineReactive(obj, key) {
       if (newVal === value || (newVal !== newVal && value !== value)) {
         return;
       }
-      // 如果没有 set 方法则忽略赋值
+      // 如果仅有 get 方法则忽略赋值
       if (getter && !setter) {
         return;
       }
