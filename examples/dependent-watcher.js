@@ -21,9 +21,9 @@ class Dep {
 // 中间依赖的平台
 const dep = new Dep();
 // 发布者（data 对象中的属性，为了方便处理，直接扩出来了，写成对象也行）
-const bookName = "Hello World";
-const bookContent = "This is a book";
-const publishInfo = ''; // 消息提示
+let bookName = "Hello World";
+let bookContent = "This is a book";
+let publishInfo = ''; // 消息提示
 // 订阅者（method 方法）
 const target = function () {
   publishInfo = `The book ${bookName}‘s content is ${bookContent}`;

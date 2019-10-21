@@ -21,8 +21,8 @@ const observer = new Observer();
 // 发布者
 const publisher = { bookName: 'Hello' }
 // 订阅者
-const subscriber = function (targetPublisher) {
-  console.log(`The publisher your followed update the book ${targetPublisher.bookName}`);
+const subscriber = function () {
+  console.log(`The publisher your followed update the book ${publisher.bookName}`);
 }
 
 // 订阅者订阅事件需要平台完成
